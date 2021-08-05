@@ -1,0 +1,27 @@
+name: cl
+'on':
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  cl-latest:
+    runs-on: '${{ matrix.os }}'
+    strategy:
+      fail-fast: true
+      matrix:
+        os:
+          - windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: configure
+        working-directory: src/
+        run: mkdir build && cd build && cmake ..
+      - name: build
+        working-directory: src/
+        run: cmake --build build
+   #   - name: test it'll continue to run unless we loose
+   #     working-directory: src/
+   #     run: cd build && ctest --verbose
